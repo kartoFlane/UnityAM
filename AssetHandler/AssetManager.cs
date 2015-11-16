@@ -98,7 +98,7 @@ namespace AssetHandler
 				throw new ArgumentNullException( "loader" );
 
 			using ( Key.Lock( loaders ) ) {
-				loaders.Add( type, loader );
+				loaders.Put( type, loader );
 			}
 		}
 
