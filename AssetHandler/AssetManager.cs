@@ -47,10 +47,10 @@ namespace AssetHandler
 
 		private readonly Dictionary<Type, AssetLoader> loaders = new Dictionary<Type, AssetLoader>();
 
-		// C# versions of Queue and Stack don't allow getting an element by index.
-		// Since we need the ability to do that sometimes, we use List instead.
-		private readonly List<AssetDescriptor> loadQueue = new List<AssetDescriptor>();
-		private readonly List<AssetLoadingTask> taskStack = new List<AssetLoadingTask>();
+		// .NET 2.5 C# versions of Queue and Stack don't allow getting an element by index.
+		// Since we need to do that sometimes, we use List-based implementations instead.
+		private readonly ListQueue<AssetDescriptor> loadQueue = new ListQueue<AssetDescriptor>();
+		private readonly ListStack<AssetLoadingTask> taskStack = new ListStack<AssetLoadingTask>();
 
 		private int toLoad = 0;
 		private int loaded = 0;
