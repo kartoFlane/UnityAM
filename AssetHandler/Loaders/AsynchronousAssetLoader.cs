@@ -35,11 +35,11 @@ namespace AssetHandler.Loaders
 			LoadAsync( manager, path, fileHandle, (P)param );
 		}
 
-		public abstract List<AssetDescriptor> GetDependencies( string path, FileInfo fileHandle, P param );
+		public abstract List<AssetDescriptor> GetDependencies( AssetManager manager, string path, FileInfo fileHandle, P param );
 
-		public override List<AssetDescriptor> GetDependencies( string path, FileInfo fileHandle, IAssetLoaderParameters param )
+		public override List<AssetDescriptor> GetDependencies( AssetManager manager, string path, FileInfo fileHandle, IAssetLoaderParameters param )
 		{
-			return GetDependencies( path, fileHandle, (P)param );
+			return GetDependencies( manager, path, fileHandle, (P)param );
 		}
 	}
 }

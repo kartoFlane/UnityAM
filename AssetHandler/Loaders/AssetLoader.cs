@@ -47,6 +47,6 @@ namespace AssetHandler.Loaders
 		/// <param name="fileName">Name of the asset to load</param>
 		/// <param name="fileHandle">The resolved file to load</param>
 		/// <param name="param">parameters for loading the asset</param>
-		public abstract List<AssetDescriptor> GetDependencies( string fileName, FileInfo fileHandle, IAssetLoaderParameters param );
+		public abstract List<AssetDescriptor> GetDependencies( AssetManager manager, string fileName, FileInfo fileHandle, IAssetLoaderParameters param );
 	}
 }

@@ -836,7 +836,7 @@ namespace AssetHandler
 
 				if ( !depsLoaded ) {
 					depsLoaded = true;
-					dependencies = syncLoader.GetDependencies( descriptor.Path, Resolve( loader, descriptor ), AssetDesc.Params );
+					dependencies = syncLoader.GetDependencies( manager, descriptor.Path, Resolve( loader, descriptor ), AssetDesc.Params );
 					if ( dependencies == null ) {
 						asset = syncLoader.LoadSync( manager, descriptor.Path, Resolve( loader, descriptor ), descriptor.Params );
 						return;
@@ -877,7 +877,7 @@ namespace AssetHandler
 				try {
 					AsynchronousAssetLoader asyncLoader = (AsynchronousAssetLoader)loader;
 
-					dependencies = asyncLoader.GetDependencies( descriptor.Path, Resolve( loader, descriptor ), descriptor.Params );
+					dependencies = asyncLoader.GetDependencies( manager, descriptor.Path, Resolve( loader, descriptor ), descriptor.Params );
 					if ( dependencies != null ) {
 						manager.InjectDependencies( descriptor, dependencies );
 					}

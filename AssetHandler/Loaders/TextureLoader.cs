@@ -29,7 +29,7 @@ namespace AssetHandler.Loaders
 			return result;
 		}
 
-		public override List<AssetDescriptor> GetDependencies( string path, FileInfo fileHandle, Texture2DParameters param )
+		public override List<AssetDescriptor> GetDependencies( AssetManager manager, string path, FileInfo fileHandle, Texture2DParameters param )
 		{
 			data = null;
 

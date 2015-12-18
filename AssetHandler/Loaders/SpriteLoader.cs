@@ -72,7 +72,7 @@ namespace AssetHandler.Loaders
 			return result;
 		}
 
-		public override List<AssetDescriptor> GetDependencies( string path, FileInfo fileHandle, SpriteParameters param )
+		public override List<AssetDescriptor> GetDependencies( AssetManager manager, string path, FileInfo fileHandle, SpriteParameters param )
 		{
 			meshType = DefaultMeshType;
 			borders = DefaultBorders;

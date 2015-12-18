@@ -23,7 +23,7 @@ namespace AssetHandler.Loaders
 			return result;
 		}
 
-		public override List<AssetDescriptor> GetDependencies( string path, FileInfo fileHandle, AudioClipParameters param )
+		public override List<AssetDescriptor> GetDependencies( AssetManager manager, string path, FileInfo fileHandle, AudioClipParameters param )
 		{
 			return null;
 		}
