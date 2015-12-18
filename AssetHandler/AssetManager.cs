@@ -465,7 +465,11 @@ namespace AssetHandler
 		/// Updates the AssetManager, causing it to load any assets in the preload queue.
 		/// Returns true if all loading is finished.
 		/// </summary>
-		public bool Update()
+		/// <param name="panic">
+		/// If true, the AssetManager will make no attempt to continue loading
+		/// assets if any of the assets fails to load.
+		/// </param>
+		public bool Update( bool panic = true )
 		{
 			try {
 				using ( Key.Lock( loadQueue, taskStack ) ) {
@@ -484,7 +488,7 @@ namespace AssetHandler
 				}
 			}
 			catch ( Exception ex ) {
-				HandleTaskError( ex );
+				HandleTaskError( ex, panic );
 				return loadQueue.Count == 0;
 			}
 		}
@@ -492,11 +496,15 @@ namespace AssetHandler
 		/// <summary>
 		/// Updates the AssetManager continuously for the specified number of miliseconds.
 		/// </summary>
-		public bool Update( int miliseconds )
+		/// <param name="panic">
+		/// If true, the AssetManager will make no attempt to continue loading
+		/// assets if any of the assets fails to load.
+		/// </param>
+		public bool Update( int miliseconds, bool panic = true )
 		{
 			long endTime = Environment.TickCount + miliseconds;
 			while ( true ) {
-				bool done = Update();
+				bool done = Update( panic );
 				if ( done || Environment.TickCount > endTime )
 					return done;
 				System.Threading.Thread.Sleep( 0 );
@@ -506,10 +514,13 @@ namespace AssetHandler
 		/// <summary>
 		/// Blocks until all assets are loaded.
 		/// </summary>
-		public void FinishLoading()
+		/// <param name="panic">
+		/// If true, the AssetManager will make no attempt to continue loading
+		/// assets if any of the assets fails to load.
+		/// </param>
+		public void FinishLoading( bool panic = true )
 		{
-			while ( !Update() )
-				;
+			while ( !Update( panic ) ) ;
 		}
 
 		public void Clear()
@@ -645,10 +656,16 @@ namespace AssetHandler
 			}
 		}
 
-		private void HandleTaskError( Exception ex )
+		private void HandleTaskError( Exception ex, bool panic = true )
 		{
-			if ( taskStack.Count == 0 )
-				throw ex;
+			if ( taskStack.Count == 0 ) {
+				if ( panic ) {
+					throw ex;
+				}
+				else {
+					Debug.LogError( ex );
+				}
+			}
 
 			// Remove the faulty task from the stack
 			AssetLoadingTask task = taskStack.Pop();
@@ -662,7 +679,12 @@ namespace AssetHandler
 
 			taskStack.Clear();
 
-			throw ex;
+			if ( panic ) {
+				throw ex;
+			}
+			else {
+				Debug.LogErrorFormat( "Could not load '{0}' due to an error.\n\n{1}", task.AssetDesc.Path, ex );
+			}
 		}
 
 		private void NextTask()
